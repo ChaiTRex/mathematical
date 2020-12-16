@@ -8,7 +8,7 @@ pub trait Fibonacci: Sized {
 macro_rules! fibonacci_trait_from_signed_array {
     ($type:ty, $array:expr) => {
         impl self::Fibonacci for $type {
-            type Iter = ::std::iter::Copied<::std::slice::Iter<'static, $type>>;
+            type Iter = ::core::iter::Copied<::core::slice::Iter<'static, $type>>;
 
             fn fibonacci_iter() -> Self::Iter {
                 ($array).iter().copied()
@@ -20,7 +20,7 @@ macro_rules! fibonacci_trait_from_signed_array {
                 if *n < 0 {
                     let element = array.get(-*n as usize).copied();
                     if *n & 1 == 0 {
-                        element.map(<$type as ::std::ops::Neg>::neg)
+                        element.map(<$type as ::core::ops::Neg>::neg)
                     } else {
                         element
                     }
@@ -35,7 +35,7 @@ macro_rules! fibonacci_trait_from_signed_array {
 macro_rules! fibonacci_trait_from_unsigned_array {
     ($type:ty, $array:expr) => {
         impl self::Fibonacci for $type {
-            type Iter = ::std::iter::Copied<::std::slice::Iter<'static, $type>>;
+            type Iter = ::core::iter::Copied<::core::slice::Iter<'static, $type>>;
 
             fn fibonacci_iter() -> Self::Iter {
                 ($array).iter().copied()
@@ -49,17 +49,17 @@ macro_rules! fibonacci_trait_from_unsigned_array {
 }
 
 fibonacci_trait_from_signed_array!(
-    ::std::primitive::i8,
+    ::core::primitive::i8,
     [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
 );
 
 fibonacci_trait_from_unsigned_array!(
-    ::std::primitive::u8,
+    ::core::primitive::u8,
     [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
 );
 
 fibonacci_trait_from_signed_array!(
-    ::std::primitive::i16,
+    ::core::primitive::i16,
     [
         0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765,
         10946, 17711, 28657
@@ -67,7 +67,7 @@ fibonacci_trait_from_signed_array!(
 );
 
 fibonacci_trait_from_unsigned_array!(
-    ::std::primitive::u16,
+    ::core::primitive::u16,
     [
         0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765,
         10946, 17711, 28657, 46368
@@ -75,7 +75,7 @@ fibonacci_trait_from_unsigned_array!(
 );
 
 fibonacci_trait_from_signed_array!(
-    ::std::primitive::i32,
+    ::core::primitive::i32,
     [
         0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765,
         10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269,
@@ -85,7 +85,7 @@ fibonacci_trait_from_signed_array!(
 );
 
 fibonacci_trait_from_unsigned_array!(
-    ::std::primitive::u32,
+    ::core::primitive::u32,
     [
         0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765,
         10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269,
@@ -95,7 +95,7 @@ fibonacci_trait_from_unsigned_array!(
 );
 
 fibonacci_trait_from_signed_array!(
-    ::std::primitive::i64,
+    ::core::primitive::i64,
     [
         0,
         1,
@@ -194,7 +194,7 @@ fibonacci_trait_from_signed_array!(
 );
 
 fibonacci_trait_from_unsigned_array!(
-    ::std::primitive::u64,
+    ::core::primitive::u64,
     [
         0,
         1,
@@ -294,7 +294,7 @@ fibonacci_trait_from_unsigned_array!(
 );
 
 fibonacci_trait_from_signed_array!(
-    ::std::primitive::i128,
+    ::core::primitive::i128,
     [
         0,
         1,
@@ -485,7 +485,7 @@ fibonacci_trait_from_signed_array!(
 );
 
 fibonacci_trait_from_unsigned_array!(
-    ::std::primitive::u128,
+    ::core::primitive::u128,
     [
         0,
         1,
@@ -677,7 +677,7 @@ fibonacci_trait_from_unsigned_array!(
     ]
 );
 
-fibonacci_trait_from_signed_array!(::std::primitive::isize, {
+fibonacci_trait_from_signed_array!(::core::primitive::isize, {
     const ARRAY_SIZE: usize = {
         let mut result = 0usize;
         let mut a = Some(0isize);
@@ -725,7 +725,7 @@ fibonacci_trait_from_signed_array!(::std::primitive::isize, {
     ARRAY
 });
 
-fibonacci_trait_from_unsigned_array!(::std::primitive::usize, {
+fibonacci_trait_from_unsigned_array!(::core::primitive::usize, {
     const ARRAY_SIZE: usize = {
         let mut result = 0usize;
         let mut a = Some(0usize);
@@ -781,8 +781,8 @@ mod tests {
         ($type:ty, $test_name:ident) => {
             #[test]
             fn $test_name() {
-                let mut a = ::std::option::Option::Some(0);
-                let mut b = ::std::option::Option::Some(1);
+                let mut a = ::core::option::Option::Some(0);
+                let mut b = ::core::option::Option::Some(1);
 
                 for i in 0.. {
                     match (
@@ -792,27 +792,27 @@ mod tests {
                         <$type>::nth_fibonacci(&i),
                     ) {
                         (
-                            ::std::option::Option::Some(a),
+                            ::core::option::Option::Some(a),
                             _,
-                            ::std::option::Option::Some(m),
-                            ::std::option::Option::Some(n),
+                            ::core::option::Option::Some(m),
+                            ::core::option::Option::Some(n),
                         ) => {
-                            ::std::assert_eq!(if i & 1 == 0 { -a } else { a }, m);
-                            ::std::assert_eq!(a, n);
+                            ::core::assert_eq!(if i & 1 == 0 { -a } else { a }, m);
+                            ::core::assert_eq!(a, n);
                         }
                         (
-                            ::std::option::Option::None,
-                            ::std::option::Option::None,
-                            ::std::option::Option::None,
-                            ::std::option::Option::None,
+                            ::core::option::Option::None,
+                            ::core::option::Option::None,
+                            ::core::option::Option::None,
+                            ::core::option::Option::None,
                         ) => break,
-                        (::std::option::Option::None, ::std::option::Option::None, _, _) => {
-                            ::std::panic!("tested results produce too many elements")
+                        (::core::option::Option::None, ::core::option::Option::None, _, _) => {
+                            ::core::panic!("tested results produce too many elements")
                         }
-                        (_, ::std::option::Option::None, _, _) => {
-                            ::std::panic!("tested results produce too few elements")
+                        (_, ::core::option::Option::None, _, _) => {
+                            ::core::panic!("tested results produce too few elements")
                         }
-                        _ => ::std::unreachable!(),
+                        _ => ::core::unreachable!(),
                     }
                     let temp = b;
                     b = a.and_then(|a| b.and_then(|b| <$type>::checked_add(a, b)));
@@ -826,26 +826,26 @@ mod tests {
         ($type:ty, $test_name:ident) => {
             #[test]
             fn $test_name() {
-                let mut a = ::std::option::Option::Some(0);
-                let mut b = ::std::option::Option::Some(1);
+                let mut a = ::core::option::Option::Some(0);
+                let mut b = ::core::option::Option::Some(1);
 
                 for i in 0.. {
                     match (a, b, <$type>::nth_fibonacci(&i)) {
-                        (::std::option::Option::Some(a), _, ::std::option::Option::Some(n)) => {
-                            ::std::assert_eq!(a, n);
+                        (::core::option::Option::Some(a), _, ::core::option::Option::Some(n)) => {
+                            ::core::assert_eq!(a, n);
                         }
                         (
-                            ::std::option::Option::None,
-                            ::std::option::Option::None,
-                            ::std::option::Option::None,
+                            ::core::option::Option::None,
+                            ::core::option::Option::None,
+                            ::core::option::Option::None,
                         ) => break,
-                        (::std::option::Option::None, ::std::option::Option::None, _) => {
-                            ::std::panic!("tested results produce too many elements")
+                        (::core::option::Option::None, ::core::option::Option::None, _) => {
+                            ::core::panic!("tested results produce too many elements")
                         }
-                        (_, ::std::option::Option::None, ::std::option::Option::None) => {
-                            ::std::panic!("tested results produce too few elements")
+                        (_, ::core::option::Option::None, ::core::option::Option::None) => {
+                            ::core::panic!("tested results produce too few elements")
                         }
-                        _ => ::std::unreachable!(),
+                        _ => ::core::unreachable!(),
                     }
                     let temp = b;
                     b = a.and_then(|a| b.and_then(|b| <$type>::checked_add(a, b)));
@@ -859,27 +859,27 @@ mod tests {
         ($type:ty, $test_name:ident) => {
             #[test]
             fn $test_name() {
-                let mut a = ::std::option::Option::Some(0);
-                let mut b = ::std::option::Option::Some(1);
+                let mut a = ::core::option::Option::Some(0);
+                let mut b = ::core::option::Option::Some(1);
 
                 let mut iter = <$type>::fibonacci_iter();
                 loop {
                     match (a, b, iter.next()) {
-                        (::std::option::Option::Some(a), _, ::std::option::Option::Some(n)) => {
-                            ::std::assert_eq!(a, n);
+                        (::core::option::Option::Some(a), _, ::core::option::Option::Some(n)) => {
+                            ::core::assert_eq!(a, n);
                         }
                         (
-                            ::std::option::Option::None,
-                            ::std::option::Option::None,
-                            ::std::option::Option::None,
+                            ::core::option::Option::None,
+                            ::core::option::Option::None,
+                            ::core::option::Option::None,
                         ) => break,
-                        (::std::option::Option::None, ::std::option::Option::None, _) => {
-                            ::std::panic!("tested results produce too many elements")
+                        (::core::option::Option::None, ::core::option::Option::None, _) => {
+                            ::core::panic!("tested results produce too many elements")
                         }
-                        (_, ::std::option::Option::None, ::std::option::Option::None) => {
-                            ::std::panic!("tested results produce too few elements")
+                        (_, ::core::option::Option::None, ::core::option::Option::None) => {
+                            ::core::panic!("tested results produce too few elements")
                         }
-                        _ => ::std::unreachable!(),
+                        _ => ::core::unreachable!(),
                     }
                     let temp = b;
                     b = a.and_then(|a| b.and_then(|b| <$type>::checked_add(a, b)));
@@ -889,28 +889,28 @@ mod tests {
         };
     }
 
-    test_signed_bounded_nth!(::std::primitive::i8, i8_nth);
-    test_unsigned_bounded_nth!(::std::primitive::u8, u8_nth);
-    test_signed_bounded_nth!(::std::primitive::i16, i16_nth);
-    test_unsigned_bounded_nth!(::std::primitive::u16, u16_nth);
-    test_signed_bounded_nth!(::std::primitive::i32, i32_nth);
-    test_unsigned_bounded_nth!(::std::primitive::u32, u32_nth);
-    test_signed_bounded_nth!(::std::primitive::i64, i64_nth);
-    test_unsigned_bounded_nth!(::std::primitive::u64, u64_nth);
-    test_signed_bounded_nth!(::std::primitive::i128, i128_nth);
-    test_unsigned_bounded_nth!(::std::primitive::u128, u128_nth);
-    test_signed_bounded_nth!(::std::primitive::isize, isize_nth);
-    test_unsigned_bounded_nth!(::std::primitive::usize, usize_nth);
-    test_bounded_iter!(::std::primitive::i8, i8_iter);
-    test_bounded_iter!(::std::primitive::u8, u8_iter);
-    test_bounded_iter!(::std::primitive::i16, i16_iter);
-    test_bounded_iter!(::std::primitive::u16, u16_iter);
-    test_bounded_iter!(::std::primitive::i32, i32_iter);
-    test_bounded_iter!(::std::primitive::u32, u32_iter);
-    test_bounded_iter!(::std::primitive::i64, i64_iter);
-    test_bounded_iter!(::std::primitive::u64, u64_iter);
-    test_bounded_iter!(::std::primitive::i128, i128_iter);
-    test_bounded_iter!(::std::primitive::u128, u128_iter);
-    test_bounded_iter!(::std::primitive::isize, isize_iter);
-    test_bounded_iter!(::std::primitive::usize, usize_iter);
+    test_signed_bounded_nth!(::core::primitive::i8, i8_nth);
+    test_unsigned_bounded_nth!(::core::primitive::u8, u8_nth);
+    test_signed_bounded_nth!(::core::primitive::i16, i16_nth);
+    test_unsigned_bounded_nth!(::core::primitive::u16, u16_nth);
+    test_signed_bounded_nth!(::core::primitive::i32, i32_nth);
+    test_unsigned_bounded_nth!(::core::primitive::u32, u32_nth);
+    test_signed_bounded_nth!(::core::primitive::i64, i64_nth);
+    test_unsigned_bounded_nth!(::core::primitive::u64, u64_nth);
+    test_signed_bounded_nth!(::core::primitive::i128, i128_nth);
+    test_unsigned_bounded_nth!(::core::primitive::u128, u128_nth);
+    test_signed_bounded_nth!(::core::primitive::isize, isize_nth);
+    test_unsigned_bounded_nth!(::core::primitive::usize, usize_nth);
+    test_bounded_iter!(::core::primitive::i8, i8_iter);
+    test_bounded_iter!(::core::primitive::u8, u8_iter);
+    test_bounded_iter!(::core::primitive::i16, i16_iter);
+    test_bounded_iter!(::core::primitive::u16, u16_iter);
+    test_bounded_iter!(::core::primitive::i32, i32_iter);
+    test_bounded_iter!(::core::primitive::u32, u32_iter);
+    test_bounded_iter!(::core::primitive::i64, i64_iter);
+    test_bounded_iter!(::core::primitive::u64, u64_iter);
+    test_bounded_iter!(::core::primitive::i128, i128_iter);
+    test_bounded_iter!(::core::primitive::u128, u128_iter);
+    test_bounded_iter!(::core::primitive::isize, isize_iter);
+    test_bounded_iter!(::core::primitive::usize, usize_iter);
 }
