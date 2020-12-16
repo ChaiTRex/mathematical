@@ -1,1 +1,1 @@
-mod sequences;
+pub mod sequences;

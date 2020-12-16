@@ -1,7 +1,37 @@
 pub trait Fibonacci: Sized {
     type Iter;
 
+    /// An `Iterator<Item = Self>` implementation that goes through all
+    /// Fibonacci numbers from zero until just before overflow.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use mathematical::sequences::Fibonacci;
+    ///
+    /// let mut iter = i8::fibonacci_iter();
+    /// assert_eq!(iter.next(), Some(0));
+    /// assert_eq!(iter.next(), Some(1));
+    /// assert_eq!(iter.next(), Some(1));
+    /// assert_eq!(iter.next(), Some(2));
+    /// assert_eq!(iter.next(), Some(3));
+    /// assert_eq!(iter.next(), Some(5));
+    /// assert_eq!(iter.nth(5), Some(89));
+    /// assert_eq!(iter.next(), None);
+    /// ```
     fn fibonacci_iter() -> Self::Iter;
+
+    /// Returns an `Option` containing either the n<sup>th</sup> Fibonacci
+    /// number or `None` if that would cause overflow.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use mathematical::sequences::Fibonacci;
+    ///
+    /// assert_eq!(i32::nth_fibonacci(&10), Some(55));
+    /// assert_eq!(i32::nth_fibonacci(&50), None);
+    /// ```
     fn nth_fibonacci(n: &Self) -> Option<Self>;
 }
 
@@ -34,7 +64,7 @@ macro_rules! fibonacci_trait_from_signed_array {
 
 macro_rules! fibonacci_trait_from_unsigned_array {
     ($type:ty, $array:expr) => {
-        impl self::Fibonacci for $type {
+        impl $crate::sequences::fibonacci::Fibonacci for $type {
             type Iter = ::core::iter::Copied<::core::slice::Iter<'static, $type>>;
 
             fn fibonacci_iter() -> Self::Iter {
