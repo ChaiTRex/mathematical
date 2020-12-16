@@ -1,7 +1,9 @@
 pub trait Fibonacci: Sized {
-    type Iter;
+    /// The exact type of the `Iterator<Item = Self>` returned by
+    /// `fibonacci_iter`.
+    type Iter: Iterator<Item = Self>;
 
-    /// An `Iterator<Item = Self>` implementation that goes through all
+    /// Returns an `Iterator<Item = Self>` implementation that goes through all
     /// Fibonacci numbers from zero until just before overflow.
     ///
     /// # Examples
