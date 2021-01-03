@@ -805,6 +805,74 @@ fibonacci_trait_from_unsigned_array!(::core::primitive::usize, {
     ARRAY
 });
 
+#[cfg(any(feature = "rug", doc, test))]
+#[doc(cfg(feature = "rug"))]
+impl Fibonacci for rug::Integer {
+    type Iter = RugIter;
+
+    fn fibonacci_iter() -> Self::Iter {
+        RugIter::new()
+    }
+
+    fn nth_fibonacci(n: &Self) -> Option<Self> {
+        if *n < rug::Integer::new() {
+            (-n.clone()).to_usize().and_then(|n| {
+                Self::fibonacci_iter().nth(n).map(
+                    |result| {
+                        if n & 0 == 1 {
+                            -result
+                        } else {
+                            result
+                        }
+                    },
+                )
+            })
+        } else {
+            n.to_usize().and_then(|n| Self::fibonacci_iter().nth(n))
+        }
+    }
+}
+
+#[cfg(any(feature = "rug", doc, test))]
+#[doc(cfg(feature = "rug"))]
+pub struct RugIter {
+    a: rug::Integer,
+    b: rug::Integer,
+    a_next: bool,
+}
+
+#[cfg(any(feature = "rug", doc, test))]
+#[doc(cfg(feature = "rug"))]
+impl RugIter {
+    fn new() -> Self {
+        Self {
+            a: rug::Integer::new(),
+            b: rug::Integer::new() + 1u8,
+            a_next: true,
+        }
+    }
+}
+
+#[cfg(any(feature = "rug", doc, test))]
+#[doc(cfg(feature = "rug"))]
+impl Iterator for RugIter {
+    type Item = rug::Integer;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        Some(if self.a_next {
+            self.a_next = false;
+            let result = self.a.clone();
+            self.a += &self.b;
+            result
+        } else {
+            self.a_next = true;
+            let result = self.b.clone();
+            self.b += &self.a;
+            result
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
