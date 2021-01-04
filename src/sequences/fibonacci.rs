@@ -819,7 +819,7 @@ impl Fibonacci for rug::Integer {
             (-n.clone()).to_usize().and_then(|n| {
                 Self::fibonacci_iter().nth(n).map(
                     |result| {
-                        if n & 0 == 1 {
+                        if n & 1 == 1 {
                             -result
                         } else {
                             result
